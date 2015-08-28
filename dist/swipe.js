@@ -11,7 +11,7 @@
 			if((event_type=="touchstart")||(event_type=="mousedown")) {
 				callee._last_start = now;
 				callee._start = e.y || e.clientY || e.touches[0].clientY;
-			} else if(((event_type=="touchend")||(event_type=="mouseup")||(event_type=="mouseout"))&&
+			} else if(((event_type=="touchend")||(event_type=="mouseup")||(event_type=="mouseout")||(event_type=="mouseleave"))&&
 						(_distance=((e.y || e.clientY || e.changedTouches[0].clientY) - callee._start))&&
 						(Math.abs(_distance)>(this.clientHeight * callee._distance))&&
 						(now - callee._last_start<=callee._time*(Math.abs(_distance)/(this.clientHeight * callee._distance)))&&
@@ -33,12 +33,14 @@
 			this.addEventListener("mousedown", _handler);
 			this.addEventListener("mouseup", _handler);
 			this.addEventListener("mouseout", _handler);
+			this.addEventListener("mouseleave", _handler);
 		} else {
 			this.attachEvent("ontouchstart", _handler);
 			this.attachEvent("ontouchend", _handler);
 			this.attachEvent("onmousedown", _handler);
 			this.attachEvent("onmouseup", _handler);
 			this.attachEvent("onmouseout", _handler);
+			this.attachEvent("onmouseleave", _handler);
 		}
 	};
 	HTMLElement.prototype.swipe = function(fn, s_d, s_t, c_d) {
@@ -50,7 +52,7 @@
 			if((event_type=="touchstart")||(event_type=="mousedown")) {
 				callee._last_start = now;
 				callee._start = e.x || e.clientX || e.touches[0].clientX;
-			} else if(((event_type=="touchend")||(event_type=="mouseup")||(event_type=="mouseout"))&&
+			} else if(((event_type=="touchend")||(event_type=="mouseup")||(event_type=="mouseout")||(event_type=="mouseleave"))&&
 						(_distance=((e.x || e.clientX || e.changedTouches[0].clientX) - callee._start))&&
 						(Math.abs(_distance)>(this.clientWidth * callee._distance))&&
 						(now - callee._last_start<=callee._time*(Math.abs(_distance)/(this.clientHeight * callee._distance)))&&
@@ -72,12 +74,14 @@
 			this.addEventListener("mousedown", _handler);
 			this.addEventListener("mouseup", _handler);
 			this.addEventListener("mouseout", _handler);
+			this.addEventListener("mouseleave", _handler);
 		} else {
 			this.attachEvent("ontouchstart", _handler);
 			this.attachEvent("ontouchend", _handler);
 			this.attachEvent("onmousedown", _handler);
 			this.attachEvent("onmouseup", _handler);
 			this.attachEvent("onmouseout", _handler);
+			this.attachEvent("onmouseleave", _handler);
 		}
 	};
 	HTMLElement.prototype.drag = function(fn, c_d) {
@@ -90,9 +94,9 @@
 				callee._x = e.x || e.clientX || e.touches[0].clientX;
 				callee._y = e.y || e.clientY || e.touches[0].clientY;
 				callee._dragging = true;
-			} else if((event_type=="touchend")||(event_type=="mouseup")||(event_type=="mouseout")) {
+			} else if((event_type=="touchend")||(event_type=="mouseup")||(event_type=="mouseout")||(event_type=="mouseleave")) {
 				callee._dragging = false;
-			} else if(((event_type=="touchmove")||(event_type=="mousemove"))&(callee._dragging==true)) {
+			} else if(((event_type=="touchmove")||(event_type=="mousemove"))&&(callee._dragging==true)) {
 				var _x = e.x || e.clientX || e.touches[0].clientX;
 				var _y = e.y || e.clientY || e.touches[0].clientY;
 				var _dx = _x - callee._x;
@@ -110,12 +114,18 @@
 		_handler._dragging = false;
 		if(this.addEventListener) {
 			this.addEventListener("touchstart", _handler);
-			this.addEventListener("touchmove", _handler);
 			this.addEventListener("touchend", _handler);
 			this.addEventListener("mousedown", _handler);
-			this.addEventListener("mousemove", _handler);
 			this.addEventListener("mouseup", _handler);
 			this.addEventListener("mouseout", _handler);
+			this.addEventListener("mouseleave", _handler);
+		} else {
+			this.attachEvent("ontouchstart", _handler);
+			this.attachEvent("ontouchend", _handler);
+			this.attachEvent("onmousedown", _handler);
+			this.attachEvent("onmouseup", _handler);
+			this.attachEvent("onmouseout", _handler);
+			this.attachEvent("onmouseleave", _handler);
 		}
 	};
 })();
